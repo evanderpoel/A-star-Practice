@@ -187,6 +187,22 @@ public class FindPathAstar : MonoBehaviour
         return false;
     }
 
+    void GetPath()
+    {
+        RemoveAllMarker();
+        PathMarker begin = lastPos;
+
+        while (!startNode.Equals(begin) && begin != null)
+        {
+            Instantiate(pathP, new Vector3(begin.Location.x * maze.scale, 0, begin.Location.z * maze.scale),
+                Quaternion.identity);
+            begin = begin.parent;
+        }
+
+        Instantiate(pathP, new Vector3(startNode.Location.x * maze.scale, 0, startNode.Location.z * maze.scale),
+            Quaternion.identity);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -195,9 +211,14 @@ public class FindPathAstar : MonoBehaviour
             BeginSearch();
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && !done)
         {
             Search(lastPos);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GetPath();
         }
     }
 }
